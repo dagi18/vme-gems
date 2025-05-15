@@ -1,0 +1,332 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shadow-sm hover:shadow-md active:shadow-sm;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus-visible:ring-blue-500;
+  }
+
+  .btn-destructive {
+    @apply bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500;
+  }
+
+  .btn-outline {
+    @apply border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 active:bg-gray-100 focus-visible:ring-gray-500;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300 focus-visible:ring-gray-500;
+  }
+
+  .btn-ghost {
+    @apply text-gray-700 hover:bg-gray-100 active:bg-gray-200 focus-visible:ring-gray-500;
+  }
+
+  .btn-link {
+    @apply text-blue-600 underline-offset-4 hover:text-blue-700 hover:underline active:text-blue-800;
+  }
+
+  .btn-success {
+    @apply bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-500;
+  }
+
+  .btn-sm {
+    @apply h-9 px-4 py-2 text-xs;
+  }
+
+  .btn-default {
+    @apply h-10 px-5 py-2.5;
+  }
+
+  .btn-lg {
+    @apply h-12 px-6 py-3 text-base;
+  }
+
+  .btn-icon {
+    @apply h-10 w-10;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 47 68% 51%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+
+    --radius: 0.5rem;
+    
+    --gold: 47 68% 51%;
+    --gold-dark: 47 68% 45%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 47 68% 51%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    
+    --gold: 47 68% 51%;
+    --gold-dark: 47 68% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .status-pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .status-published {
+    @apply bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100;
+  }
+  
+  .status-draft {
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100;
+  }
+  
+  .status-approved {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100;
+  }
+
+  .status-overview {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100;
+  }
+  
+  .sidebar-item {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent;
+  }
+  
+  .sidebar-item-active {
+    @apply bg-accent text-accent-foreground;
+  }
+  
+  .bg-gold {
+    @apply bg-[hsl(var(--gold))];
+  }
+  
+  .hover\:bg-gold-dark:hover {
+    @apply hover:bg-[hsl(var(--gold-dark))];
+  }
+  
+  .text-gold {
+    @apply text-[hsl(var(--gold))];
+  }
+  
+  .hover\:text-gold-dark:hover {
+    @apply hover:text-[hsl(var(--gold-dark))];
+  }
+
+  .bg-gold-light {
+    @apply bg-[hsl(var(--gold-light))];
+  }
+
+  .text-gold-light {
+    @apply text-[hsl(var(--gold-light))];
+  }
+
+  /* Dashboard card styling */
+  .dashboard-card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow p-5 border-0 relative overflow-hidden;
+  }
+
+  /* Stat card styling based on the design in the image */
+  .stat-card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow border-0 relative overflow-hidden flex items-center p-5 transition-all duration-200 cursor-pointer;
+  }
+  
+  .stat-card:hover {
+    @apply shadow-md transform -translate-y-1 border-gold border;
+  }
+
+  .stat-card-icon {
+    @apply flex items-center justify-center h-12 w-12 rounded-lg bg-gray-100 dark:bg-gray-700 mr-4 flex-shrink-0;
+  }
+
+  .stat-card-content {
+    @apply flex-grow;
+  }
+
+  .stat-card-title {
+    @apply text-sm font-medium text-gray-500 dark:text-gray-400 mb-1;
+  }
+
+  .stat-card-value {
+    @apply text-2xl font-bold;
+  }
+
+  .stat-card-subtitle {
+    @apply text-xs text-gray-500 dark:text-gray-400 mt-1;
+  }
+
+  .stat-card-growth {
+    @apply text-xs text-green-600 dark:text-green-400 mt-1;
+  }
+
+  /* Keep the original dashboard card styles for other cards */
+  .dashboard-card-title {
+    @apply text-sm font-medium text-gray-500 dark:text-gray-400 mb-1;
+  }
+
+  .dashboard-card-value {
+    @apply text-2xl font-bold;
+  }
+
+  .dashboard-card-subtitle {
+    @apply text-xs text-gray-500 dark:text-gray-400 mt-1;
+  }
+
+  .dashboard-card-icon {
+    @apply absolute right-4 top-4 opacity-80;
+  }
+
+  .dashboard-card-growth {
+    @apply text-xs text-green-600 dark:text-green-400 flex items-center mt-2;
+  }
+}
+
+.animate-enter {
+  animation: fade-in 0.3s ease-out;
+}
+
+.animate-exit {
+  animation: fade-out 0.3s ease-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.transition-width {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Make sure sidebar rail is always visible */
+[data-sidebar="rail"] {
+  display: flex !important;
+}
+
+/* Ensure sidebar menu items always display their icons */
+[data-sidebar="menu-button"] [data-lucide] {
+  flex-shrink: 0;
+}
