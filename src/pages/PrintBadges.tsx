@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { Printer, RotateCcw, Search, QrCode } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import EventBadge from '../components/EventBadge';
+import AIOBadge from '../components/AIOBadge';
+import { Button } from '../components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 
 interface Guest {
   id: string;
@@ -11,10 +14,20 @@ interface Guest {
   jobTitle: string;
   event: string;
   isPrinted: boolean;
+  country?: string;
 }
 
 // Mock data for badges
 const initialGuests: Guest[] = [
+  {
+    id: 'aio-001',
+    name: 'Nathalie Tueno Epse Kamga',
+    company: 'African Insurance Organization',
+    jobTitle: 'Organizer',
+    event: '51st Conference & Annual General Assembly (AIO 2025)',
+    country: 'Cameroon',
+    isPrinted: false
+  },
   {
     id: 'a1f3e2b0-1d2c-4c21-9aa2-001',
     name: 'Eleni Tesfaye',
@@ -105,10 +118,13 @@ const eventData = {
   location: "110 Avenue de la Marne, 56000 Vannes"
 };
 
+type BadgeTemplate = 'event' | 'aio';
+
 const PrintBadges: React.FC = () => {
   const [guests, setGuests] = useState<Guest[]>(initialGuests);
   const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState<BadgeTemplate>('event');
   const { toast } = useToast();
   
   const filteredGuests = guests.filter(guest => 
@@ -335,7 +351,7 @@ const PrintBadges: React.FC = () => {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6">
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-medium mb-4">Filter Guests</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Event</label>
               <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
@@ -344,6 +360,18 @@ const PrintBadges: React.FC = () => {
                 <option>Marketing Summit</option>
                 <option>Product Launch</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Badge Template</label>
+              <Select value={selectedTemplate} onValueChange={(value: BadgeTemplate) => setSelectedTemplate(value)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select template" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="event">Event Badge</SelectItem>
+                  <SelectItem value="aio">AIO Badge</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="relative">
@@ -475,16 +503,26 @@ const PrintBadges: React.FC = () => {
               
               return (
                 <div key={guest.id} className="flex justify-center">
-                  <EventBadge 
-                    name={guest.name}
-                    type={guest.jobTitle}
-                    title={guest.jobTitle}
-                    organization={guest.company}
-                    date={eventData.date}
-                    time={eventData.time}
-                    location={eventData.location}
-                    qrValue={guest.id}
-                  />
+                  {selectedTemplate === 'aio' ? (
+                    <AIOBadge
+                      name={guest.name}
+                      organization={guest.company}
+                      role={guest.jobTitle}
+                      country={guest.country || ''}
+                      qrValue={guest.id}
+                    />
+                  ) : (
+                    <EventBadge 
+                      name={guest.name}
+                      type={guest.jobTitle}
+                      title={guest.jobTitle}
+                      organization={guest.company}
+                      date={eventData.date}
+                      time={eventData.time}
+                      location={eventData.location}
+                      qrValue={guest.id}
+                    />
+                  )}
                 </div>
               );
             })}

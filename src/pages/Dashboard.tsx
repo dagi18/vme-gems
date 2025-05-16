@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, Users, Printer, Store, ChevronLeft, ChevronRight } from 'lucide-react';
 import { mockApi, StatsSummary, Event } from '../services/mockApi';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +7,7 @@ import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recha
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState<StatsSummary | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +50,7 @@ const Dashboard: React.FC = () => {
   const renderCalendar = () => {
     return (
       <div className="overflow-hidden rounded-lg bg-white dark:bg-gray-800">
-        <div className="bg-[#40E0D0] p-4">
+        <div className="bg-[#ffcd1e] p-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1))}
@@ -100,7 +101,8 @@ const Dashboard: React.FC = () => {
                 {dayEvents.map(event => (
                   <div
                     key={event.id}
-                    className="text-xs p-1 bg-[#40E0D0]/10 text-[#40E0D0] dark:text-[#40E0D0] rounded truncate"
+                    onClick={() => navigate(`/events/${event.id}`)}
+                    className="text-xs p-1 bg-[#ffcd1e]/10 text-[#ffcd1e] dark:text-[#ffcd1e] rounded truncate cursor-pointer hover:bg-[#ffcd1e]/20"
                     title={event.name}
                   >
                     {event.name}

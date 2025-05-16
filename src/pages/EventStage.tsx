@@ -16,6 +16,8 @@ const EventStage: React.FC = () => {
     maxGuests: '',
     eventType: '',
     category: '',
+    organizer: '',
+    partner: '',
     vendor: '',
   });
   
@@ -102,6 +104,34 @@ const EventStage: React.FC = () => {
                 onChange={handleChange}
                 rows={4}
                 placeholder="Provide a detailed description of the event"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-gold focus:border-gold bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Organizer
+              </label>
+              <input
+                type="text"
+                name="organizer"
+                value={formData.organizer}
+                onChange={handleChange}
+                placeholder="Event organizing body or institution"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-gold focus:border-gold bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Partner
+              </label>
+              <input
+                type="text"
+                name="partner"
+                value={formData.partner}
+                onChange={handleChange}
+                placeholder="Partner organization (if any)"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-gold focus:border-gold bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>

@@ -14,8 +14,11 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  isAuthenticated: boolean;
+  role: string;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  setAuth: (auth: { isAuthenticated: boolean; role: string }) => void;
   switchRole: (role: UserRole) => void;
 }
 
@@ -46,6 +49,8 @@ const mockUsers: Record<UserRole, User> = {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState('');
 
   useEffect(() => {
     // Check for saved user in localStorage
@@ -66,12 +71,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (email === 'admin@eventpro.com') {
       setUser(mockUsers.admin);
       localStorage.setItem('eventpro_user', JSON.stringify(mockUsers.admin));
+      setIsAuthenticated(true);
+      setRole('admin');
     } else if (email === 'organizer@eventpro.com') {
       setUser(mockUsers.organizer);
       localStorage.setItem('eventpro_user', JSON.stringify(mockUsers.organizer));
+      setIsAuthenticated(true);
+      setRole('organizer');
     } else if (email === 'usher@eventpro.com') {
       setUser(mockUsers.usher);
       localStorage.setItem('eventpro_user', JSON.stringify(mockUsers.usher));
+      setIsAuthenticated(true);
+      setRole('usher');
     } else {
       throw new Error('Invalid credentials');
     }
@@ -90,8 +101,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('eventpro_user', JSON.stringify(mockUsers[role]));
   };
 
+  const setAuth = (auth: { isAuthenticated: boolean; role: string }) => {
+    setIsAuthenticated(auth.isAuthenticated);
+    setRole(auth.role);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, switchRole }}>
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      isAuthenticated,
+      role,
+      login,
+      logout,
+      setAuth,
+      switchRole
+    }}>
       {children}
     </AuthContext.Provider>
   );

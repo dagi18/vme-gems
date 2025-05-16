@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, Calendar, Users, BarChart2 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 const Reports = () => {
   return (
@@ -89,28 +90,130 @@ const Reports = () => {
         </TabsContent>
         
         <TabsContent value="analytics" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Analytics Reports</CardTitle>
-              <CardDescription>
-                Access and download analytics reports
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="border rounded-md p-4 flex justify-between items-center">
-                  <div>
-                    <h3 className="font-medium">Performance Analytics {['Q1', 'Q2', 'Q3', 'Q4'][index]} 2023</h3>
-                    <p className="text-sm text-gray-500">Generated on {new Date().toLocaleDateString()}</p>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Event Attendance Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Event Attendance</CardTitle>
+                <CardDescription>Monthly attendance trends</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart
+                    data={[
+                      { month: 'Jan', attendance: 150 },
+                      { month: 'Feb', attendance: 230 },
+                      { month: 'Mar', attendance: 180 },
+                      { month: 'Apr', attendance: 290 },
+                      { month: 'May', attendance: 320 },
+                      { month: 'Jun', attendance: 250 },
+                    ]}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="attendance" stroke="#ffcd1e" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Registration Status Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Registration Status</CardTitle>
+                <CardDescription>Current registration breakdown</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Registered', value: 400 },
+                        { name: 'Checked In', value: 300 },
+                        { name: 'No Show', value: 100 },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      <Cell fill="#ffcd1e" />
+                      <Cell fill="#36B37E" />
+                      <Cell fill="#FF5630" />
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Event Categories Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Event Categories</CardTitle>
+                <CardDescription>Distribution by event type</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={[
+                      { category: 'Conference', count: 45 },
+                      { category: 'Workshop', count: 30 },
+                      { category: 'Seminar', count: 25 },
+                      { category: 'Networking', count: 20 },
+                      { category: 'Other', count: 15 },
+                    ]}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="category" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill="#ffcd1e" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Monthly Revenue Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Monthly Revenue</CardTitle>
+                <CardDescription>Revenue trends over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart
+                    data={[
+                      { month: 'Jan', revenue: 5000 },
+                      { month: 'Feb', revenue: 7200 },
+                      { month: 'Mar', revenue: 6800 },
+                      { month: 'Apr', revenue: 9100 },
+                      { month: 'May', revenue: 11200 },
+                      { month: 'Jun', revenue: 8900 },
+                    ]}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="revenue" stroke="#36B37E" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

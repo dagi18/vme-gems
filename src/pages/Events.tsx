@@ -10,13 +10,15 @@ const Events: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const mockEvents = [
-    { 
+    {
       id: "1",
-      title: "Annual Tech Conference", 
-      date: "2023-10-15",
-      location: "San Francisco Convention Center",
-      attendees: 1250,
+      title: "51st Conference & Annual General Assembly (AIO 2025)",
+      date: "2025-05-26",
+      location: "Addis Ababa, Ethiopia",
+      attendees: 0,
       status: "published",
+      organizer: "African Insurance Organization (AIO)",
+      partner: "APEX",
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80"
     },
     { 

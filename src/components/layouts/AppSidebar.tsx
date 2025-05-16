@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -6,7 +5,7 @@ import {
   LayoutDashboard, Calendar, Users, Store, 
   CheckSquare, Tag, CircuitBoard, Printer, 
   Smartphone, BarChart2, FileText, Settings, 
-  LogOut, UserCog
+  LogOut, UserCog, UserPlus
 } from 'lucide-react';
 
 import {
@@ -57,7 +56,7 @@ const AppSidebar: React.FC = () => {
     { to: "/", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/events", icon: Calendar, label: "Events" },
     { to: "/guests", icon: Users, label: "Guests" },
-    { to: "/vendors", icon: Store, label: "Vendors" },
+    { to: "/onsite-registration", icon: UserPlus, label: "Onsite Registration" },
     { to: "/badge-management", icon: Tag, label: "Badge Management" },
     { to: "/print-badges", icon: Printer, label: "Print Badges" },
     { to: "/mobile-check-in", icon: Smartphone, label: "Mobile Check-in" },
@@ -69,6 +68,7 @@ const AppSidebar: React.FC = () => {
     { to: "/", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/events", icon: Calendar, label: "My Events" },
     { to: "/guests", icon: Users, label: "Guests" },
+    { to: "/onsite-registration", icon: UserPlus, label: "Onsite Registration" },
     { to: "/print-badges", icon: Printer, label: "Print Badges" },
     { to: "/mobile-check-in", icon: Smartphone, label: "Mobile Check-in" },
     { to: "/settings", icon: Settings, label: "Settings" },
@@ -85,10 +85,7 @@ const AppSidebar: React.FC = () => {
       <SidebarRail />
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2">
-          <div className="bg-gold p-1 rounded">
-            <Calendar size={20} className="text-white" />
-          </div>
-          <span className="font-semibold text-xl">EventPro</span>
+          <span className="font-semibold text-xl">VEMS</span>
           <SidebarTrigger className="ml-auto" />
         </div>
       </SidebarHeader>

@@ -17,7 +17,8 @@ import Vendors from './pages/Vendors';
 import Settings from './pages/Settings';
 import UserManagement from './pages/UserManagement';
 import BadgeManagement from './pages/BadgeManagement';
-import Reports from './pages/Reports';
+import Reports from "./pages/Reports";
+import OnsiteRegistration from "./pages/OnsiteRegistration";
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Unauthorized from './pages/Unauthorized';
@@ -51,6 +52,7 @@ function App() {
                 <Route path="print-badges" element={<PrintBadges />} />
                 <Route path="badge-management" element={<BadgeManagement />} />
                 <Route path="reports" element={<Reports />} />
+                <Route path="onsite-registration" element={<OnsiteRegistration />} />
               </Route>
             </Route>
             
@@ -64,7 +66,8 @@ function App() {
                 <Route path="approvals" element={<Approvals />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="vendors" element={<Vendors />} />
-                <Route path="settings" element={<Settings />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="user-management" element={<UserManagement />} />
               </Route>
             </Route>

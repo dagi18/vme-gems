@@ -53,7 +53,7 @@ const Topbar: React.FC = () => {
     if (path === '/user-management') return 'User Management';
     if (path === '/settings') return 'Settings';
     
-    return 'EventPro';
+    return 'VEMS';
   };
 
   const getLastUpdated = () => {

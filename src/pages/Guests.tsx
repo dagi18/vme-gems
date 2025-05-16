@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, Users, Plus, Download } from 'lucide-react';
+import { Search, Filter, Users, Plus, Download, Printer } from 'lucide-react';
 import { mockApi, Guest } from '../services/mockApi';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -173,12 +173,22 @@ const Guests: React.FC = () => {
                       {renderStatus(guest.status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                      <Link
-                        to={`/guests/${guest.id}`}
-                        className="text-gold hover:text-gold-dark font-medium"
-                      >
-                        View
-                      </Link>
+                      <div className="flex items-center justify-end gap-4">
+                        <button
+                          onClick={() => window.open(`/print-badges?guestId=${guest.id}`, '_blank')}
+                          className="text-gray-600 hover:text-gold transition-colors inline-flex items-center gap-1"
+                          title="Print Badge"
+                        >
+                          <Printer size={16} />
+                          <span className="sr-only">Print Badge</span>
+                        </button>
+                        <Link
+                          to={`/guests/${guest.id}`}
+                          className="text-gold hover:text-gold-dark font-medium"
+                        >
+                          View
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}

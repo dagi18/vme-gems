@@ -4,35 +4,82 @@ import { format, addDays, subDays } from 'date-fns';
 // Types
 export interface Event {
   id: string;
+  vendorId: string;
   name: string;
-  date: string;
-  dateEnd?: string;
-  time?: string;
+  description: string;
+  startDate: string;
+  endDate: string;
   location: string;
-  status: 'published' | 'draft' | 'approved' | 'overview';
-  guests: number;
-  maxGuests: number;
-  description?: string;
+  maxGuest: number;
+  registrationDeadline?: string;
+  status: 'draft' | 'overview' | 'approved' | 'published' | 'completed' | 'canceled';
+  eventTypeId: string;
+  eventCategoryId: string;
 }
 
 export interface Guest {
   id: string;
   name: string;
+  phone: string;
+  email?: string;
   organization: string;
   jobTitle: string;
-  contact: { phone: string; email: string };
+}
+
+export interface GuestType {
+  id: string;
+  name: string;
+  note: string;
+}
+
+export interface Booking {
+  id: string;
   eventId: string;
-  registered: string;
-  status: 'registered' | 'checked-in' | 'no-show';
+  guestId: string;
+  guestTypeId: string;
+  expiration: string;
+  checkedInTimestamp?: string;
+  badgeTemplateId?: string;
+}
+
+export interface BadgeTemplate {
+  id: string;
+  template: string;
 }
 
 export interface Vendor {
   id: string;
   name: string;
-  contact: { phone: string; email: string };
+  email: string;
+  address: string;
   tinNumber: string;
-  contactPersons: number;
-  created: string;
+  phone: string;
+  contactPersonIds: string[];
+}
+
+export interface ContactPerson {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+}
+
+export interface EventType {
+  id: string;
+  name: string;
+}
+
+export interface EventCategory {
+  id: string;
+  name: string;
+}
+
+export interface EventReporting {
+  id: string;
+  eventId: string;
+  attendedGuestIds: string[];
+  registeredGuestIds: string[];
 }
 
 export interface Approval {
@@ -70,9 +117,48 @@ const today = new Date();
 const formatDate = (date: Date): string => format(date, 'MMM d, yyyy');
 
 // Mock events data
+const eventTypes: EventType[] = [
+  { id: '1', name: 'Conference' },
+  { id: '2', name: 'Workshop' },
+  { id: '3', name: 'Seminar' },
+  { id: '4', name: 'Product Launch' }
+];
+
+const eventCategories: EventCategory[] = [
+  { id: '1', name: 'Technology' },
+  { id: '2', name: 'Business' },
+  { id: '3', name: 'Marketing' },
+  { id: '4', name: 'Insurance' }
+];
+
+
+
+const contactPersons: ContactPerson[] = [
+  {
+    id: 'cp1',
+    firstName: 'Nathalie',
+    lastName: 'Tueno',
+    phone: '+237000000001',
+    email: 'nathalie.tueno@aio.org'
+  }
+];
+
 const events: Event[] = [
   {
     id: '1',
+    vendorId: '1',
+    name: '51st Conference & Annual General Assembly (AIO 2025)',
+    startDate: '2025-05-26',
+    endDate: '2025-05-28',
+    location: 'Addis Ababa, Ethiopia',
+    status: 'published',
+    maxGuest: 500,
+    description: 'The 51st Conference & Annual General Assembly of the African Insurance Organization (AIO) will be held in Addis Ababa, Ethiopia. The event brings together insurance professionals, organizations, and stakeholders from across Africa and beyond to discuss industry trends, challenges, and opportunities.',
+    eventTypeId: '1',
+    eventCategoryId: '4'
+  },
+  {
+    id: '7',
     name: 'Annual Tech Conference',
     date: format(addDays(today, 30), 'MMM dd, yyyy') + ' - ' + format(addDays(today, 32), 'MMM dd, yyyy'),
     location: 'Convention Center',
@@ -124,7 +210,28 @@ const events: Event[] = [
 ];
 
 // Mock guests data
+const guestTypes: GuestType[] = [
+  { id: '1', name: 'Regular', note: 'Standard registration' },
+  { id: '2', name: 'VIP', note: 'VIP access and benefits' },
+  { id: '3', name: 'Speaker', note: 'Event speaker' },
+  { id: '4', name: 'Student', note: 'Student discount applies' }
+];
+
+const badgeTemplates: BadgeTemplate[] = [
+  { id: '1', template: 'Regular badge template' },
+  { id: '2', template: 'VIP badge template' },
+  { id: '3', template: 'Speaker badge template' }
+];
+
 const guests: Guest[] = [
+  {
+    id: 'aio-001',
+    name: 'Nathalie Tueno Epse Kamga',
+    organization: 'African Insurance Organization',
+    jobTitle: 'Organizer',
+    phone: '+237000000001',
+    email: 'nathalie.kamga@aio.org'
+  },
   {
     id: 'a1f3e2b0-1d2c-4c21-9aa2-001',
     name: 'Eleni Tesfaye',
@@ -258,9 +365,19 @@ const guests: Guest[] = [
 ];
 
 // Mock vendors data
+// Mock vendors data
 const vendors: Vendor[] = [
   {
     id: '1',
+    name: 'African Insurance Organization',
+    email: 'contact@aio.org',
+    address: 'Cameroon, Yaoundé',
+    tinNumber: 'TIN123456',
+    phone: '+237000000000',
+    contactPersonIds: ['cp1', 'cp2']
+  },
+  {
+    id: '2',
     name: 'TechEvents Inc.',
     contact: { 
       phone: '+1 (555) 123-4567', 
@@ -369,25 +486,68 @@ export const analyticsData = {
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Mock API service
+const bookings: Booking[] = [
+  {
+    id: 'b1',
+    eventId: '1',
+    guestId: 'aio-001',
+    guestTypeId: '3',
+    expiration: '2025-05-28',
+    badgeTemplateId: '3'
+  }
+];
+
+const eventReports: EventReporting[] = [
+  {
+    id: 'er1',
+    eventId: '1',
+    attendedGuestIds: ['aio-001'],
+    registeredGuestIds: ['aio-001']
+  }
+];
+
 export const mockApi = {
   // Events
   getEvents: async (): Promise<Event[]> => {
     await delay(500);
     return [...events];
   },
-  
-  getEvent: async (id: string): Promise<Event | undefined> => {
+
+  getEvent: async (id: string): Promise<Event | null> => {
     await delay(300);
-    return events.find(event => event.id === id);
+    return events.find(event => event.id === id) || null;
   },
-  
-  updateEvent: async (id: string, eventData: Partial<Event>): Promise<Event | undefined> => {
+
+  // Guests and Bookings
+  getGuestsByEvent: async (eventId: string): Promise<Guest[]> => {
     await delay(300);
-    const eventIndex = events.findIndex(event => event.id === id);
-    if (eventIndex === -1) return undefined;
-    
-    events[eventIndex] = { ...events[eventIndex], ...eventData };
-    return events[eventIndex];
+    const eventBookings = bookings.filter(booking => booking.eventId === eventId);
+    return guests.filter(guest => eventBookings.some(booking => booking.guestId === guest.id));
+  },
+
+  registerGuest: async (guestData: Partial<Guest & { eventId: string; guestTypeId: string }>): Promise<{ guest: Guest; booking: Booking }> => {
+    await delay(300);
+    const newGuest: Guest = {
+      id: Math.random().toString(36).substring(2, 9),
+      name: guestData.name || '',
+      organization: guestData.organization || '',
+      jobTitle: guestData.jobTitle || '',
+      phone: guestData.phone || '',
+      email: guestData.email
+    };
+
+    const newBooking: Booking = {
+      id: Math.random().toString(36).substring(2, 9),
+      eventId: guestData.eventId || '',
+      guestId: newGuest.id,
+      guestTypeId: guestData.guestTypeId || '1',
+      expiration: events.find(e => e.id === guestData.eventId)?.endDate || '',
+      badgeTemplateId: '1'
+    };
+
+    guests.push(newGuest);
+    bookings.push(newBooking);
+    return { guest: newGuest, booking: newBooking };
   },
   
   // Guests

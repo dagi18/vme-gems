@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { 
   Card, 
   CardContent, 
@@ -24,15 +23,19 @@ import {
   Download,
   Search,
   Filter,
-  CheckCircle
+  CheckCircle,
+  ArrowLeft,
+  UserPlus
 } from 'lucide-react';
 import { mockApi, Guest, Event } from '../services/mockApi';
 import { useToast } from '../hooks/use-toast';
 import GuestCsvImporter from '../components/GuestCsvImporter';
 import EventBadge from '../components/EventBadge';
+import AIOBadge from '../components/AIOBadge';
 
 const EventDetails = () => {
   const { eventId } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
   
   const [event, setEvent] = useState<Event | null>(null);
@@ -360,6 +363,9 @@ const EventDetails = () => {
           </div>
         </div>
         <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back
+          </Button>
           <Button variant="outline" size="sm">
             <User className="h-4 w-4 mr-2" />
             Assign Staff
@@ -446,9 +452,8 @@ const EventDetails = () => {
                 <div>
                   <h3 className="font-semibold">Actions</h3>
                   <div className="flex flex-col gap-2 mt-2">
-                    <Button variant="outline" size="sm" className="justify-start">
-                      <CheckSquare className="h-4 w-4 mr-2" />
-                      Manage Registration
+                    <Button variant="outline" size="sm" className="justify-start" onClick={() => navigate(`/onsite-registration?eventId=${eventId}`)}>
+                      <UserPlus className="mr-2 h-4 w-4" /> Manage Registration
                     </Button>
                     <Button variant="outline" size="sm" className="justify-start">
                       <Printer className="h-4 w-4 mr-2" />
@@ -642,15 +647,30 @@ const EventDetails = () => {
                   
                   {guests.length > 0 ? (
                     <div className="flex justify-center">
-                      <EventBadge 
-                        name={guests[0].name}
-                        type="ATTENDEE"
-                        title={guests[0].jobTitle}
-                        organization={guests[0].organization}
-                        date={eventDetails.date}
-                        location={eventDetails.location}
-                        qrValue={guests[0].id}
-                      />
+                      {filteredGuests.map((guest) => (
+                        <div key={guest.id} className="flex justify-center">
+                          {event?.id === 'aio-2025' ? (
+                            <AIOBadge
+                              name={guest.name}
+                              organization={guest.organization}
+                              role={guest.jobTitle}
+                              country={guest.country || ''}
+                              qrValue={guest.id}
+                            />
+                          ) : (
+                            <EventBadge 
+                              name={guest.name}
+                              type={guest.jobTitle}
+                              title={guest.jobTitle}
+                              organization={guest.organization}
+                              date={event?.date}
+                              time={event?.time}
+                              location={event?.location}
+                              qrValue={guest.id}
+                            />
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ) : (
                     <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
