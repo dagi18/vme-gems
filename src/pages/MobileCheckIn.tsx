@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Search, CheckCircle, QrCode, User, UserCheck, Smartphone } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
+import QRScanner from '../components/QRScanner';
 
 // Mock data for check-ins
 interface Guest {
@@ -56,27 +57,37 @@ const MobileCheckIn: React.FC = () => {
 
   const startScanning = () => {
     setScanning(true);
+  };
+
+  const handleQRScan = (qrData: string) => {
+    const guestToCheckIn = guests.find(guest => guest.id === qrData && !guest.checkedIn);
     
-    // Simulate QR code scan after 2 seconds
-    setTimeout(() => {
-      // Find first guest that isn't checked in yet
-      const guestToCheckIn = guests.find(guest => !guest.checkedIn);
+    if (guestToCheckIn) {
+      handleCheckIn(guestToCheckIn.id);
+      setScanning(false);
       
-      if (guestToCheckIn) {
-        handleCheckIn(guestToCheckIn.id);
-        
-        // Show QR success screen
-        setScanning(false);
-        
-        toast({
-          title: "QR Code Scanned",
-          description: `${guestToCheckIn.name} has been checked in.`,
-          variant: "default",
-        });
-      } else {
-        setScanning(false);
-      }
-    }, 2000);
+      toast({
+        title: "QR Code Scanned",
+        description: `${guestToCheckIn.name} has been checked in.`,
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Invalid QR Code",
+        description: "No matching guest found or guest already checked in.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleScanError = (error: unknown) => {
+    console.error('QR Scan Error:', error);
+    toast({
+      title: "Scan Error",
+      description: "There was an error scanning the QR code. Please try again.",
+      variant: "destructive",
+    });
+    setScanning(false);
   };
 
   return (
@@ -127,18 +138,11 @@ const MobileCheckIn: React.FC = () => {
                 Start Scanning
               </button>
               
-              {scanning && (
-                <div className="mt-4">
-                  <div className="animate-pulse flex flex-col items-center">
-                    <div className="w-48 h-48 border-2 border-gold/50 relative">
-                      <div className="absolute inset-0 border-t-2 border-gold animate-spin"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-gold text-sm">Scanning...</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <QRScanner
+                isScanning={scanning}
+                onScan={handleQRScan}
+                onError={handleScanError}
+              />
             </div>
             
             {/* Manual Check-In */}

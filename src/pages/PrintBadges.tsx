@@ -124,7 +124,7 @@ const PrintBadges: React.FC = () => {
   const [guests, setGuests] = useState<Guest[]>(initialGuests);
   const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTemplate, setSelectedTemplate] = useState<BadgeTemplate>('event');
+  const [selectedTemplate, setSelectedTemplate] = useState<BadgeTemplate>('aio');
   const { toast } = useToast();
   
   const filteredGuests = guests.filter(guest => 
@@ -178,22 +178,108 @@ const PrintBadges: React.FC = () => {
         <html>
           <head>
             <title>Print Badges</title>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
             <style>
               @media print {
                 body { margin: 0; padding: 0; }
                 .badge-container { page-break-inside: avoid; break-inside: avoid; }
-                .badge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5in; }
-                @page { size: portrait; margin: 0.5cm; }
+                .badge-grid { 
+                  display: grid; 
+                  grid-template-columns: 1fr; 
+                  gap: 0.5in; 
+                }
+                @page { 
+                  size: A5 portrait; 
+                  margin: 0.5cm; 
+                }
                 .print-ui { display: none !important; }
               }
-              body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+              body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 0; }
               .badge-container { 
-                width: 3.5in; 
-                height: 5in; 
+                width: 5.8in;
+                height: 8.3in;
                 margin: 0.25in auto; 
                 background-color: white; 
                 display: flex;
                 flex-direction: column;
+                position: relative;
+                overflow: hidden;
+              }
+              .aio-badge {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                position: relative;
+              }
+              .aio-badge::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: url('/aio-2025-banner.png');
+                background-size: cover;
+                background-position: center;
+                opacity: 0.15;
+                z-index: 0;
+              }
+              .aio-header {
+                width: 100%;
+                height: 180px;
+                background-image: url('/aio-2025-banner.png');
+                background-size: cover;
+                background-position: center;
+                margin-bottom: 2rem;
+              }
+              .aio-content {
+                flex-grow: 1;
+                padding: 2rem;
+                text-align: center;
+                position: relative;
+                z-index: 1;
+              }
+              .aio-content h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1B3C87;
+                margin-bottom: 1rem;
+              }
+              .aio-content h2 {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 0.5rem;
+              }
+              .aio-content h3 {
+                font-size: 1.25rem;
+                color: #1B3C87;
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+              }
+              .aio-content h4 {
+                font-size: 1.1rem;
+                color: #666;
+              }
+              .aio-qr {
+                margin: 2rem auto;
+                padding: 1rem;
+                background: white;
+                border-radius: 0.75rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              }
+              .aio-footer {
+                padding: 1.5rem;
+                border-top: 1px solid #e5e7eb;
+                background: rgba(255, 255, 255, 0.9);
+              }
+              .aio-footer .logo-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                align-items: center;
+                justify-items: center;
+              }
+              .aio-footer img {
+                height: 40px;
+                object-fit: contain;
               }
               .name-section {
                 padding: 24px 12px 8px;
@@ -289,30 +375,32 @@ const PrintBadges: React.FC = () => {
       selectedGuestDetails.forEach(guest => {
         printWindow.document.write(`
           <div class="badge-container">
-            <div class="name-section">
-              <p class="name-text">${guest.name}</p>
-            </div>
-            
-            <div class="org-section">
-              <p class="org-text">${guest.company}</p>
-            </div>
-            
-            <div class="title-section">
-              <p class="title-text">${guest.jobTitle}</p>
-            </div>
-            
-            <div class="qr-section">
-              <img 
-                src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(guest.id)}"
-                alt="QR Code"
-                width="180"
-                height="180"
-              />
-            </div>
-            
-            <div class="badge-type">
-              VISITOR
-            </div>
+              <div class="aio-badge">
+                <div class="aio-header"></div>
+                <div class="aio-content">
+                  <h1>${guest.name}</h1>
+                  <h2>${guest.company}</h2>
+                  ${guest.country ? `<h4>Country: ${guest.country}</h4>` : ''}
+                  <h3>${guest.jobTitle}</h3>
+                  
+                  <div class="aio-qr">
+                    <img 
+                      src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(guest.id)}"
+                      alt="QR Code"
+                      width="200"
+                      height="200"
+                    />
+                  </div>
+                </div>
+                
+                <div class="aio-footer">
+                  <div class="logo-grid">
+                    <img src="/aio-small.png" alt="AIO" />
+                    <img src="/apex-logo.png" alt="APEX" />
+                    <img src="/eth-re-logo.png" alt="Ethiopian Re" />
+                  </div>
+                </div>
+              </div>
           </div>
         `);
       });

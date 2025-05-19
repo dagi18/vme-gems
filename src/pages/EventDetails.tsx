@@ -160,24 +160,28 @@ const EventDetails = () => {
                 @media print {
                   body { margin: 0; padding: 0; }
                   .badge-container { page-break-inside: avoid; break-inside: avoid; }
-                  .badge { width: 3.5in; height: 5in; margin: 0.25in; }
+                  .badge { width: 3in; height: 5in; margin: 0.25in; }
                   .badge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5in; }
                   @page { size: portrait; margin: 0.5cm; }
                   .print-ui { display: none !important; }
+                  .print-ui2 {  width: 100%; height: 100%;  }
+
                 }
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
                 .badge { 
-                  background-color: white; 
+                  margin-top: 45%;
+                   margin-left: 20%;
                   display: flex;
                   flex-direction: column;
-                  height: 100%;
+                  height: 50%;
+                 
                 }
                 .name-section {
-                  padding: 24px 12px 8px;
+                  padding: 20px 8px 6px;
                   text-align: center;
                 }
                 .name-text {
-                  font-size: 28px;
+                  font-size: 22px;
                   font-weight: bold;
                   margin: 0;
                 }
@@ -191,7 +195,7 @@ const EventDetails = () => {
                   margin: 0;
                 }
                 .title-section {
-                  padding: 8px 12px 16px;
+                  padding: 4px 4px 10px;
                   text-align: center;
                 }
                 .title-text {
@@ -200,24 +204,50 @@ const EventDetails = () => {
                   text-transform: uppercase;
                   margin: 0;
                 }
+
+                 .country-section  {
+              padding: 4px 4px 10px;
+                  text-align: center;
+                }
+                .country-section {
+                  font-size: 20px;
+                  font-weight: bold;
+                  text-transform: uppercase;
+                  margin: 0;
+                }
+                 
                 .qr-section {
-                  padding: 16px;
+                   padding-top: 6px;
+                  padding-bottom: 16px;
                   display: flex;
                   justify-content: center;
                   flex-grow: 1;
                 }
                 .badge-type {
-                  background-color: #1a56db;
+                  background-color:rgb(26, 219, 45);
                   color: white;
-                  padding: 16px 0;
+                  padding: 10px 0;
                   text-align: center;
                   font-weight: bold;
                   text-transform: uppercase;
                   letter-spacing: 1px;
-                  font-size: 20px;
-                  margin-top: auto;
+                  font-size: 16px;
+                  margin-top: auto; margin-right: 10px;
+                  margin-left: 10px;
                 }
-                .print-ui { 
+                     
+                   .print-ui2 { 
+                  position: fixed; 
+                  top: 0; 
+                  left: 0; 
+                  right: 0; 
+                 background: url('/badge_design.png') top center / contain no-repeat;
+                  padding: 10px; 
+                  text-align: center; 
+                  z-index: 1000; 
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+                }
+                  .print-ui { 
                   position: fixed; 
                   top: 0; 
                   left: 0; 
@@ -252,7 +282,7 @@ const EventDetails = () => {
               <div class="print-ui">
                 <button onclick="window.print()" class="print-button">Print Badges</button>
               </div>
-              
+                       <div class="print-ui2">
               <div class="badge-grid">
                 ${selectedGuestDetails.map(guest => `
                   <div class="badge-container">
@@ -268,13 +298,16 @@ const EventDetails = () => {
                       <div class="title-section">
                         <p class="title-text">${guest.jobTitle}</p>
                       </div>
+                        <div class="title-section1">
+                        <p class="title-text">Ethiopia</p>
+                      </div>
                       
                       <div class="qr-section">
                         <img 
                           src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(guest.id)}"
                           alt="QR Code"
-                          width="180"
-                          height="180"
+                          width="70"
+                          height="70"
                         />
                       </div>
                       
@@ -285,6 +318,7 @@ const EventDetails = () => {
                   </div>
                 `).join('')}
               </div>
+                    </div>
             </body>
           </html>
         `);
@@ -333,7 +367,7 @@ const EventDetails = () => {
     description: event.description || '',
     organizer: 'TechEvents Inc.', // Placeholder
     status: event.status,
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=80'
+    image: '/Visual-1_.webp'
   } : {
     id: eventId || '1',
     title: 'Loading...',
@@ -347,7 +381,7 @@ const EventDetails = () => {
     description: '',
     organizer: '',
     status: 'draft',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=80'
+    image: '/Visual-1_.webp'
   };
 
   return (
